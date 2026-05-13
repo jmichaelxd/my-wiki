@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Server Wiki</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,8..144,400..700;1,8..144,400..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="wiki.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" aria-label="Wiki navigation">
+        <header class="sidebar-head">
+          <div class="brand">
+            <span class="brand-mark" aria-hidden="true">◇</span>
+            <div>
+              <h1 class="brand-title">Server Wiki</h1>
+              <p class="brand-sub">Hosts &amp; applications</p>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary" id="btn-new-server">
+            + New server
+          </button>
+          <label class="sr-only" for="sidebar-filter">Filter pages</label>
+          <input
+            type="search"
+            id="sidebar-filter"
+            class="filter-input"
+            placeholder="Filter servers & apps…"
+            autocomplete="off"
+          />
+        </header>
+        <nav class="tree" id="nav-tree"></nav>
+        <footer class="sidebar-foot">
+          <button type="button" class="btn btn-ghost btn-small" id="btn-export">
+            Export JSON
+          </button>
+          <label class="btn btn-ghost btn-small file-btn">
+            Import JSON
+            <input type="file" id="import-file" accept="application/json,.json" hidden />
+          </label>
+        </footer>
+      </aside>
+
+      <main class="main">
+        <header class="main-toolbar">
+          <div class="toolbar-left">
+            <div class="breadcrumb" id="breadcrumb"></div>
+            <button
+              type="button"
+              class="btn btn-primary btn-small btn-inline"
+              id="btn-new-app-toolbar"
+              hidden
+            >
+              + New application on this server
+            </button>
+          </div>
+          <div class="toolbar-actions">
+            <span class="save-pill" id="save-status" aria-live="polite">Saved</span>
+            <button type="button" class="btn btn-ghost btn-small" id="btn-save" hidden>
+              Save
+            </button>
+            <button type="button" class="btn btn-danger btn-small" id="btn-delete" hidden>
+              Delete…
+            </button>
+          </div>
+        </header>
+
+        <article class="article empty-state" id="article-root">
+          <div class="wiki-site-title-block" id="wiki-site-title-block">
+            <label class="field-label" for="wiki-site-title-input">Website title</label>
+            <input
+              id="wiki-site-title-input"
+              class="wiki-site-title-input"
+              type="text"
+              autocomplete="organization"
+              placeholder="Name of this wiki"
+            />
+          </div>
+
+          <div id="empty-message" class="empty-message">
+            <p>Select a server or application from the sidebar, or create a new server.</p>
+          </div>
+
+          <div id="editor-panel" class="editor-panel" hidden>
+            <div class="tabs" role="tablist">
+              <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="edit">
+                Edit
+              </button>
+              <button type="button" class="tab" role="tab" aria-selected="false" data-tab="preview">
+                Preview
+              </button>
+            </div>
+
+            <nav class="guide-index" id="guide-index" aria-label="Guide index"></nav>
+
+            <div class="meta-grid" id="meta-fields"></div>
+
+            <div class="sections-toolbar" id="sections-toolbar">
+              <span class="sections-toolbar-label">Content sections</span>
+              <button type="button" class="btn btn-ghost btn-small" id="btn-add-section">
+                + Add section
+              </button>
+            </div>
+            <div id="sections-root" class="sections-root"></div>
+            <div id="body-preview" class="body-preview prose" hidden></div>
+
+            <div class="secondary-actions" id="secondary-actions"></div>
+          </div>
+        </article>
+      </main>
+    </div>
+
+    <dialog class="modal" id="modal-confirm">
+      <form method="dialog" class="modal-form">
+        <h2 class="modal-title" id="modal-title">Confirm</h2>
+        <p class="modal-body" id="modal-body"></p>
+        <menu class="modal-actions">
+          <button type="submit" value="cancel" class="btn btn-ghost">Cancel</button>
+          <button type="submit" value="ok" class="btn btn-danger" id="modal-ok">Delete</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <dialog class="modal" id="modal-unsaved">
+      <form method="dialog" class="modal-form">
+        <h2 class="modal-title">Unsaved changes</h2>
+        <p class="modal-body">You have unsaved changes. What would you like to do?</p>
+        <menu class="modal-actions modal-actions-spread">
+          <button type="submit" value="cancel" class="btn btn-ghost">Stay</button>
+          <button type="submit" value="discard" class="btn btn-ghost">Discard</button>
+          <button type="submit" value="save" class="btn btn-primary modal-btn-primary">Save</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="wiki.js" defer></script>
+  </body>
+</html>
